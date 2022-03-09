@@ -1,23 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from 'react';
+import './styles/style.css' 
+import component from './Componentes' 
+import Aos from 'aos';
+import ContextStates from "./Context";    
+import "aos/dist/aos.css"; 
 
-function App() {
+const App = () => {
+   useEffect(() => {
+    Aos.init({ duration: 650 });  
+    
+  }, []);  
+ 
+  
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className=""> 
+      <ContextStates>
+        <component.Navbar />  
+        <div className="w-screen h-screen text-black pl-28 py-14">
+        <component.ContenedorCaja />
+        </div>
+      </ContextStates> 
     </div>
   );
 }
