@@ -17,6 +17,8 @@ function Estados(props) {
 
     //Terminal 
     const [terminalProducts, setTerminalProducts] = useState([]); 
+    const [cantidadesProducto, setCantidadesProducto] = useState([])
+    const [terminalRowSelect, setTerminalRowSelect] = useState(0)
      
     return (
         <ContextStates.Provider value={
@@ -29,7 +31,9 @@ function Estados(props) {
                 seccion, setSeccion,
                 API,
                 listaClientes, setListaClientes,
-                terminalProducts, setTerminalProducts
+                terminalProducts, setTerminalProducts,
+                cantidadesProducto, setCantidadesProducto,
+                terminalRowSelect, setTerminalRowSelect
             }}>
             {props.children}
         </ContextStates.Provider>
