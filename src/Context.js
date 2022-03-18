@@ -6,10 +6,11 @@ function Estados(props) {
     const [opcSelectModal, setOpcSelectModal] = useState(false); 
     const [seccion, setSeccion] = useState('caja'); 
     const [Modal, setModal] = useState({mensaje: '', pregunta: ''}); 
-    const [API, setAPI] = useState('http://localhost:9000')
+    const [API, setAPI] = useState('http://localhost:9000') 
 
     //inventario 
-    const [productosStock, setProductosStock] = useState([]); 
+    const [productosStock, setProductosStock] = useState([]);  
+    const [Proveedores, setProveedores] = useState([]);  
 
     //clientes
     const [showTermilaClientes, setShowTermilaClientes] = useState(false); 
@@ -33,7 +34,8 @@ function Estados(props) {
                 listaClientes, setListaClientes,
                 terminalProducts, setTerminalProducts,
                 cantidadesProducto, setCantidadesProducto,
-                terminalRowSelect, setTerminalRowSelect
+                terminalRowSelect, setTerminalRowSelect ,
+                Proveedores, setProveedores
             }}>
             {props.children}
         </ContextStates.Provider>

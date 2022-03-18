@@ -1,9 +1,22 @@
 import Navbar from "./components/NavBar.jsx";
-import terminal from "./pages/caja/Terminal.jsx"; 
-import Stock from "./pages/inventario/Stock";
-import clientes from "./pages/clientes/ListaClientes";
-import Container from "./pages/Contenedor";
 import Modal from './components/Modal.jsx'
+
+//caja
+import terminal from "./pages/caja/Terminal.jsx"; 
+
+//inventario
+import Stock from "./pages/inventario/Stock";
+import ProductDetails from "./pages/inventario/ProductDetails";
+import FormularioRegProduct from "./pages/inventario/FormularioRegProduct";
+import FormularioRegEntrada from "./pages/inventario/FormularioRegEntrada";
+
+//clientes
+import clientes from "./pages/clientes/ListaClientes";
+import listaClientesdetalles from "./pages/clientes/ClientDetails";
+import FormularioRegClient from "./pages/clientes/FormularioRegClient.jsx";
+
+//contenedor
+import Container from "./pages/Contenedor";
 
 export default {
     "Navbar": Navbar,
@@ -11,5 +24,10 @@ export default {
     "Stock": Stock,
     "Clientes": clientes,
     "Modal": Modal,
-    "Container": Container
+    "Container": Container,
+    "ProductDetails": ProductDetails,
+    "ClientDetails": listaClientesdetalles,
+    "FormularioRegClient": FormularioRegClient,
+    "FormularioRegProduct": FormularioRegProduct,
+    "FormularioRegEntrada": FormularioRegEntrada
 }

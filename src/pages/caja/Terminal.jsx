@@ -9,14 +9,14 @@ const TableProductsRow = (props) => {
     const {terminalRowSelect, setTerminalRowSelect} = useContext(ContextStates); 
 
     return(
-        <div data-aos="fade-up" onClick={() => setTerminalRowSelect(props.codigo)} className="Rows" >
-             <div className={terminalRowSelect == props.codigo ? colorBtnSelect : colorBtn }>
-                 <div className="text-left pl-2 w-9/12"><h1>{props.Producto}</h1></div>
-                 <div className="text-center w-11/12"><h1>{props.Categoria}</h1></div>
-                 <div className="text-center w-10/12"><h1>{props.Precio}</h1></div>
-                 <div className="text-right pr-4 w-9/12"><h1>{props.Cantidad}</h1></div>
-             </div>
-         </div> 
+        <div onClick={() => setTerminalRowSelect(props.codigo)} className="Rows" >
+            <div className={terminalRowSelect == props.codigo ? colorBtnSelect : colorBtn }>
+                <div className="text-left pl-2 w-9/12"><h1>{props.Producto}</h1></div>
+                <div className="text-center w-11/12"><h1>{props.Categoria}</h1></div>
+                <div className="text-center w-10/12"><h1>{props.Precio}</h1></div>
+                <div className="text-right pr-4 w-9/12"><h1>{props.Cantidad}</h1></div>
+            </div>
+        </div> 
     )
 }
 
@@ -33,6 +33,7 @@ const Terminal = () => {
         setModal({pregunta: '¿Desea hacer una venta por mayoreo?'})
         setStateModal(true) 
     }
+
     const hideClients = () => { 
         setModal({pregunta: '¿Desea hacer una venta por menudeo?'})
         setStateModal(true) 
@@ -45,21 +46,37 @@ const Terminal = () => {
             {
                 if(productoVerify(codigo) == null)
                 { 
-                    setCantidadesProducto(arr => [...arr, {code: codigo, cantidad: 1} ]) 
-                    setTerminalProducts(arr => [...arr, producto(codigo) ])  
+                    let existencias = producto(codigo)
+                    if(existencias.Existencias != 0)
+                    {
+                        setCantidadesProducto(arr => [...arr, {code: codigo, cantidad: 1} ]) 
+                        setTerminalProducts(arr => [...arr, producto(codigo) ])
+                    }
+                    else
+                    {
+                        alert("Sin existencias")
+                    }   
                 }
                 else
                 { 
+                    let existencias = producto(codigo)
+
                     //obtiene la cantidad del producto y suma uno 
                     var cantProducto = cantidadesProducto.find(i => i.code === codigo) 
                     cantProducto.cantidad += 1 
 
-                    //quita la cantidad de la lista
-                    var nuevo = cantidadesProducto.filter(i => i.code != codigo) 
-                    setCantidadesProducto(nuevo) 
-
-                    //actualiza la lista
-                    setCantidadesProducto(arr => [...arr, cantProducto ]) 
+                    if(cantProducto.cantidad <= existencias.Existencias)
+                    {
+                        //quita la cantidad de la lista
+                        var nuevo = cantidadesProducto.filter(i => i.code != codigo) 
+                        setCantidadesProducto(nuevo) 
+                        
+                        //actualiza la lista
+                        setCantidadesProducto(arr => [...arr, cantProducto ]) 
+                    }
+                    else{
+                        alert("El producto se agoto")
+                    }
                 }
             } 
             else{ 
@@ -83,7 +100,7 @@ const Terminal = () => {
     }
  
     useEffect(() => {    
-        Axios.get(`${API}/api/getProducts`)
+        Axios.get(`${API}/api/getStock`)
         .then((response) => { 
           setProductosStock(response.data) 
         }) 
@@ -93,7 +110,7 @@ const Terminal = () => {
     return (
         <div>  
             <div className=" px-8 w-10/12 m-auto flex justify-between">
-                <div data-aos="fade-down" className="w-6/12">
+                <div className="w-6/12">
                     <div className="mb-4 w-8/12 m-auto">
                         <div className="flex justify-between"> 
                             <FaSearch className="text-xl m-1 text-black" /> 
@@ -101,7 +118,7 @@ const Terminal = () => {
                         </div>
                         <div className="bg-slate-800 w-full m-auto h-1 rounded-2xl"></div>
                     </div>
-                    <div name="tabla_productos" className="border-2 shadow-xl w-full rounded-2xl h-96 xl:h-150 p-8"> 
+                    <div data-aos="fade-right" data-aos-duration="250" name="tabla_productos" className="border-2 shadow-xl w-full rounded-2xl h-96 xl:h-150 p-8"> 
                         {/* headerTable */}
                         <div name="cabezera_productos" className="border-b sticky z-10 flex justify-between font-bold px-4">
                             <h1>Producto</h1>
@@ -113,7 +130,7 @@ const Terminal = () => {
                             {
                                 terminalProducts && terminalProducts.map( product => {  
                                     return(
-                                        <TableProductsRow codigo={product.codigo} key={product.id} Producto={product.nombre} Categoria={product.categoria} Precio={product.retail} Cantidad={getCant(product.codigo)} />        
+                                        <TableProductsRow codigo={product.codigo} key={product.id} Producto={product.producto} Categoria={product.categoria} Precio={product.retail} Cantidad={getCant(product.codigo)} />        
                                     )
                                 })
                             } 
@@ -141,7 +158,7 @@ const Terminal = () => {
                             } 
                         </div>
                     </div>
-                    <div data-aos="zoom-in-down" className="shadow-xl border-2 w-full rounded-2xl h-52 xl:h-80 p-8 my-4 xl:my-12">
+                    <div data-aos="zoom-in-down" className="shadow-xl hidden border-2 w-full rounded-2xl h-52 xl:h-80 p-8 my-4 xl:my-12">
                         <div className="">
                             <h1 className="text-5xl font-bold text-center">Cliente</h1>
                             <div className="text-lg text-black mt-12 m-auto w-7/12" >
